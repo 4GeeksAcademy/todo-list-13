@@ -1,26 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 
-//include images into your bundle
-import rigoImage from "../../img/rigo-baby.jpg";
 
-//create your first component
-const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+function App(){
+
+const [newItem, setNewItem] = useState("");
+//-- array con toos los items//
+const[items, setItems] = useState ([]);
+
+//-- funcion con alerta si no escriben//
+function addItem() {
+	if (!newItem){
+		alert("Enter a item.");
+		return;
+	}
+
+	//helper function//
+
+	const item = {
+		id: Math.floor(Math.random() * 100),
+		value: newItem
 };
 
-export default Home;
+//
+setItems(oldList => [...oldList, item]); //old list mas el item nuevo//
+setNewItem(""); //new item back to empty string up on array
+}
+
+	function deleteItem(id){
+		const  newArray = items.filter(item =>item.id !== id);
+		setItems(newArray);
+		
+
+	}
+
+
+	return (
+		<div className="App text-center">
+
+			<h1> To do List</h1>
+
+		<input
+		type = "text"
+		placeholder="write something ..."
+		value={newItem}
+		onChange={e => setNewItem(e.target.value)}
+		/>
+
+		<button onClick={() => addItem ()}>Add</button>
+
+		<ul>
+
+			{items.map(item => {
+
+				return(
+					<li key={item.id}><strong>
+						{item.value}</strong>
+						<button onClick={() => deleteItem(item.id)}>
+    <img src="https://cdn.icon-icons.com/icons2/37/PNG/512/x_3464.png" width={10} alt="Eliminar" />
+</button>
+					
+					</li>
+				)
+			})}
+		</ul>
+		</div>
+	);
+}
+
+export default App;
